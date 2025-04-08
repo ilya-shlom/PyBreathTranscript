@@ -1,5 +1,6 @@
 # PyBreathTranscript
-![Static Badge](https://img.shields.io/badge/testpypi-0.1.0-blue?link=https%3A%2F%2Ftest.pypi.org%2Fproject%2FPyBreathTranscript%2F0.1.0a1%2F)
+[![PyPi](https://img.shields.io/badge/pypi-0.1.0-blue)](https://test.pypi.org/project/PyBreathTranscript/)
+
 
 
 This package is used for transcribing breath recordings (captured using an in-ear microphone) into text symbols.
