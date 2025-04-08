@@ -11,7 +11,7 @@ packages = ["PyBreathTranscript"]
 
 [project]
 name = "PyBreathTranscript"
-version = "0.1.0a1"
+version = "0.1.0"
 dependencies = [
     "PyAudio==0.2.14",
     "pydub==0.25.1",
