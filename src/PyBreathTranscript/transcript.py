@@ -23,9 +23,39 @@ def load_audio(file_path):
     return signal, sr
 
 
+def transcript_chunk(file_path: str, method=FINGERPRINT) -> str:
+    """
+     Transcribes one chunk of breath using the specified method.
+
+    ### Parameters
+        **file_path (str)**: Path to the file that needs to be transcribed.
+        **method (str)**: The transcription method to use (default: 'FINGERPRINT').
+
+    ### Methods
+        **FINGERPRINT (default)**: Uses Audio Fingerprinting method for transcription
+        **WAVEFORM**: Uses waveforms comparison for transcription
+    
+    ### Returns
+        **str**: The transcript.
+    """
+    if method == FINGERPRINT:
+            breath_fragment_fp = extract_audio_fingerprint(file_path)
+            letters["similarity"] = letters["fingerprint"].apply(
+                lambda fingerprint: compute_continuous_similarity(breath_fragment_fp, fingerprint)
+            )
+    elif method == WAVEFORM:
+        breath_fragment_for_comparing, sr1 = load_audio(file_path)
+        letters["similarity"] = letters["audio_data"].apply(
+            lambda audio_data: compare_waveforms(breath_fragment_for_comparing, audio_data)
+        )
+        # Find the letter with the highest similarity
+    best_letter = letters.loc[letters["similarity"].idxmax(), "letter"]
+    return best_letter
+
+
 def transcript(file_path: str, method=FINGERPRINT) -> str:
     """
-     Transcribes breath using the specified method.
+     Transcribes full recording of breath using the specified method.
 
     ### Parameters
         **file_path (str)**: Path to the file that needs to be transcribed.
@@ -52,18 +82,7 @@ def transcript(file_path: str, method=FINGERPRINT) -> str:
         breath_fragment.export(temp_output, format='wav')
 
         # Creating transcript of breath
-        if method == FINGERPRINT:
-            breath_fragment_fp = extract_audio_fingerprint(temp_output)
-            letters["similarity"] = letters["fingerprint"].apply(
-                lambda fingerprint: compute_continuous_similarity(breath_fragment_fp, fingerprint)
-            )
-        elif method == WAVEFORM:
-            breath_fragment_for_comparing, sr1 = load_audio(temp_output)
-            letters["similarity"] = letters["audio_data"].apply(
-                lambda audio_data: compare_waveforms(breath_fragment_for_comparing, audio_data)
-            )
-            # Find the letter with the highest similarity
-        best_letter = letters.loc[letters["similarity"].idxmax(), "letter"]
+        best_letter = transcript_chunk(temp_output, method)
         transcript += best_letter
 
     return transcript
