@@ -1,5 +1,5 @@
 # PyBreathTranscript
-[![PyPi](https://img.shields.io/badge/pypi-0.1.0-blue)](https://test.pypi.org/project/PyBreathTranscript/)
+[![PyPi](https://img.shields.io/badge/pypi-0.2.1-blue)](https://test.pypi.org/project/PyBreathTranscript/)
 
 
 
