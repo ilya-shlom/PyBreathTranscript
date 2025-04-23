@@ -15,6 +15,12 @@ Install the package:
 pip install -i https://test.pypi.org/simple/ PyBreathTranscript
 ```
 
+or
+
+```bash
+pip install git+https://github.com/ilya-shlom/PyBreathTranscript.git
+```
+
 Example usage:
 
 ```python
