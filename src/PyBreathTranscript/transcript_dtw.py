@@ -27,6 +27,10 @@ import threading
 from typing import Dict, List
 import pyaudio
 import pickle
+import importlib.resources as pkg_resources
+
+import PyBreathTranscript
+
 
 # --------------------------------------------------------------------- #
 #                            Configuration
@@ -100,10 +104,7 @@ def is_silent(buf: bytes) -> bool:
 # --------------------------------------------------------------------- #
 
 def _load_references() -> Dict[str, List[float]]:
-    pkl_path = os.path.join(os.path.dirname(__file__), "references.pkl")
-    if not os.path.isfile(pkl_path):
-        raise RuntimeError(f"Reference file not found: {pkl_path}")
-    with open(pkl_path, "rb") as f:
+    with pkg_resources.files(PyBreathTranscript).joinpath("references.pkl").open("rb") as f:
         refs = pickle.load(f)
     return refs
 
