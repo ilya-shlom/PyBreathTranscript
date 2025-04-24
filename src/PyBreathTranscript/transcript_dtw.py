@@ -1,4 +1,4 @@
-"""transcript_dtw.py – 200 ms DTW recognizer + AudioSegment support
+"""transcrpit.py – 200 ms DTW recognizer + AudioSegment support
 
 This module now accepts **either** raw bytes **or** `pydub.AudioSegment`
 objects in `LetterRecognizer.process_chunk()`, so your Flask/Socket.IO
@@ -24,6 +24,10 @@ import struct
 import math
 import threading
 from typing import Dict, List, Union
+import pickle
+import PyBreathTranscript
+import importlib.resources as pkg_resources
+
 
 import pyaudio
 
@@ -122,20 +126,8 @@ def _audiosegment_to_bytes(seg: "AudioSegment") -> bytes:  # type: ignore
 # --------------------------------------------------------------------- #
 
 def _load_references(path: str) -> Dict[str, List[float]]:
-    refs: Dict[str, List[float]] = {}
-    for fname in os.listdir(path):
-        if not fname.lower().endswith(".wav"):
-            continue
-        letter = os.path.splitext(fname)[0].upper()
-        wav_path = os.path.join(path, fname)
-        with wave.open(wav_path, "rb") as wf:
-            src_rate = wf.getframerate()
-            raw = wf.readframes(wf.getnframes())
-        ints = struct.unpack(f"<{len(raw)//2}h", raw)
-        ints = downsample(list(ints), src_rate)
-        refs[letter] = frame_rms(ints)
-    if not refs:
-        raise RuntimeError(f"No reference WAVs found in {path!r}")
+    with pkg_resources.files(PyBreathTranscript).joinpath("references.pkl").open("rb") as f:
+        refs = pickle.load(f)
     return refs
 
 # --------------------------------------------------------------------- #
