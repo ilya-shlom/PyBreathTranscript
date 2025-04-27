@@ -49,7 +49,7 @@ WINDOW_MS: int = int(SEGMENT_DURATION * 1000)  # 200 ms
 SEGMENT_SAMPLES: int = int(RATE * SEGMENT_DURATION)  # 3 200 samples
 SEGMENT_BYTES: int = SEGMENT_SAMPLES * 2             # int16 → 2 bytes
 
-SILENCE_THRESHOLD: int = 500          # max abs amplitude regarded silent
+SILENCE_THRESHOLD: int = 250          # max abs amplitude regarded silent
 
 # Feature extraction
 FRAME_MS: int = 10
