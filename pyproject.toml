@@ -11,7 +11,7 @@ packages = ["PyBreathTranscript"]
 
 [project]
 name = "PyBreathTranscript"
-version = "0.6.2"
+version = "0.7.0"
 dependencies = [
     "pydub==0.25.1",
     "scikit-learn==1.5.2",
